@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "774303550466",
+    "project_id": "clipboardsync-bde54",
+    "storage_bucket": "clipboardsync-bde54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774303550466:android:ff4f207092bd7e50116b1b",
+        "android_client_info": {
+          "package_name": "com.example.clipboardsync"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDABdbScFRAOTtqUrPK2ThYzt61thC-5d4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
