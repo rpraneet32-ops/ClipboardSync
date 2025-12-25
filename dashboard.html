@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-Sync Web Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        .container { width: 400px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        .clip-card { background: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; position: relative; }
+        .clip-content { font-size: 16px; color: #333; word-wrap: break-word; }
+        .clip-time { font-size: 12px; color: #888; margin-top: 5px; }
+        .copy-btn { background-color: #6200ea; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; float: right; }
+        .copy-btn:hover { background-color: #3700b3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Sync Windows</h2>
+    <div id="clip-list">Loading clips...</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAduU75RqDq7-sdFbn3EQhak9J_x_UbfWk",
+  authDomain: "clipboardsync-bde54.firebaseapp.com",
+  projectId: "clipboardsync-bde54",
+  storageBucket: "clipboardsync-bde54.firebasestorage.app",
+  messagingSenderId: "774303550466",
+  appId: "1:774303550466:web:9241c34f0267aa9e116b1b",
+  measurementId: "G-XH821JTWTD"
+};
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const clipList = document.getElementById("clip-list");
+
+  // Real-time Listener
+  const q = query(collection(db, "clips"), orderBy("timestamp", "desc"));
+  onSnapshot(q, (snapshot) => {
+    clipList.innerHTML = ""; // Clear list
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const date = new Date(data.timestamp).toLocaleTimeString();
+      
+      const card = document.createElement("div");
+      card.className = "clip-card";
+      card.innerHTML = `
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('${data.content}')">Copy</button>
+        <div class="clip-content">${data.content}</div>
+        <div class="clip-time">${date} • ${data.device || "Unknown"}</div>
+      `;
+      clipList.appendChild(card);
+    });
+  });
+</script>
+
+</body>
+</html>
